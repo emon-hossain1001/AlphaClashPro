@@ -8,6 +8,11 @@
 // }
 function handleKeyboardButtonPress(event){
     const playerPressed =  event.key;
+    // stop the game if pressed "Esc"
+    if(playerPressed === 'Escape'){
+        gameOver();
+    }
+
     // key player is expected to press
     const currentAlphabetElement = document.getElementById('current-alphabet');
     const currentAlphabet = currentAlphabetElement.innerText;
@@ -47,6 +52,10 @@ function handleKeyboardButtonPress(event){
         const updatedLife = currentLife - 1;
         setTextElementValueById('current-life',updatedLife);
 
+        if(updatedLife === 0){
+            gameOver();
+        }
+
 
 //------------------------------------------------
         // console.log('dhurr vaiya ba apu right key press koro');
@@ -81,8 +90,26 @@ function continueGame(){
 }
 
 function play(){
+    // hide everything show only the playground
     hideElementById('home');
+    hideElementById('final-score');
     showElementById('play-ground');
+
+    // reset score and life
+    setTextElementValueById('current-life',5);
+    setTextElementValueById('current-score', 0);
     continueGame();
 }
 
+
+
+function gameOver(){
+    hideElementById('play-ground');
+    showElementById('final-score');
+    // update final score
+    const lastScore = getTextElementValueById('current-score');
+    setTextElementValueById('last-score',lastScore);
+    // clear the last selected alphabet highlight
+    const currentAlphabet = getElementTextById('current-alphabet');
+    removeBackgroundColorById(currentAlphabet);
+}
